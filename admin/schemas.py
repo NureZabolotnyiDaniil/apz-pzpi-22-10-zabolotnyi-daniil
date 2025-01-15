@@ -1,6 +1,5 @@
 from pydantic import BaseModel, EmailStr
 from passlib.context import CryptContext
-from typing import Dict
 
 
 class CreateUser(BaseModel):
@@ -12,13 +11,10 @@ class UserInDB(CreateUser):
     hashed_password: str
 
 
-# Password hashing context
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-# Token configuration
-SECRET_KEY = "smartlighting_arkpz"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+users_db = {}
 
-# In-memory "database"
-users_db: Dict[str, UserInDB] = {}
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
+SECRET_KEY = "your_secret_key"
+ALGORITHM = "HS256"

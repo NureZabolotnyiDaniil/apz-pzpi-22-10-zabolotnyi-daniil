@@ -1,8 +1,10 @@
+from datetime import datetime, timedelta
+
+import jwt
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
-from jose import jwt
-from datetime import datetime, timedelta
-from schemas import CreateUser, pwd_context, users_db, UserInDB, ACCESS_TOKEN_EXPIRE_MINUTES, SECRET_KEY, ALGORITHM
+
+from admin.schemas import CreateUser, pwd_context, users_db, UserInDB, ACCESS_TOKEN_EXPIRE_MINUTES, SECRET_KEY, ALGORITHM
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 
