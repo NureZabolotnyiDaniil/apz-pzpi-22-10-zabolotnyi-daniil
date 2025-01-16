@@ -1,6 +1,7 @@
-from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from typing import AsyncIterator
+
+from fastapi import FastAPI
 
 from admin.views import router as admin_router
 
@@ -10,6 +11,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     print("Starting up...")
     yield
     print("Shutting down...")
+
 
 app = FastAPI(openapi_url="/openapi.json", lifespan=lifespan)
 app.include_router(admin_router)
