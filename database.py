@@ -1,10 +1,14 @@
 # database.py
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
+from dotenv import load_dotenv
+
+load_dotenv()
 
 DB_NAME = "SmartLightingDB"
 DB_USER = "postgres"
-DB_PASSWORD = "IYBWCisU4E"
+DB_PASSWORD = os.getenv("POSTGRES_PASSWORD")
 DB_HOST = "localhost"
 DB_PORT = "5433"
 
