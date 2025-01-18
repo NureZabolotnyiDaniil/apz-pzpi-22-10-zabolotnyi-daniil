@@ -9,4 +9,5 @@ class Administrator(Base):
     surname = Column(String, nullable=False)
     email = Column(String, unique=True, nullable=False, index=True)
     password = Column(String, nullable=False)
-    status = Column(String, nullable=False, default="active")
+    status = Column(String, nullable=False, default="inactive")
+    rights = Column(String, nullable=False, default="restricted_access")

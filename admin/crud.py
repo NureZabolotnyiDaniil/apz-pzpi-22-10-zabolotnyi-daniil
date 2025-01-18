@@ -1,13 +1,14 @@
+# admin/crud.py
 from datetime import datetime, timedelta
 from typing import List
 
 import jwt
 from fastapi import HTTPException, status
+
 from sqlalchemy.orm import Session
 
-from models import Administrator
-from admin.schemas import RegistrationRequest, LoginRequest
-
+from admin.models import Administrator
+from admin.schemas import RegistrationRequest, LoginRequest, AdminUpdate
 from passlib.context import CryptContext
 
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
@@ -57,8 +58,66 @@ def authenticate_admin(db: Session, login_data: LoginRequest) -> Administrator:
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Incorrect email or password"
         )
+
+    if admin.status != "active":
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Your account has not been activated. Wait for activation."
+        )
+
     return admin
 
 
 def get_all_admins(db: Session) -> List[Administrator]:
-    return db.query(Administrator).all()
+    return db.query(Administrator).order_by(Administrator.id).all()
+
+
+def delete_admin(db: Session, admin_id: int) -> Administrator:
+    admin = db.query(Administrator).filter(Administrator.id == admin_id).first()
+    if not admin:
+        raise HTTPException(status_code=404, detail="Admin not found")
+    db.delete(admin)
+    db.commit()
+    return admin
+
+
+def update_admin(db: Session, admin_id: int, admin_data: AdminUpdate) -> Administrator:
+    admin = db.query(Administrator).filter(Administrator.id == admin_id).first()
+    if not admin:
+        raise HTTPException(status_code=404, detail="Admin not found")
+
+    if admin_data.first_name is not None:
+        admin.first_name = admin_data.first_name
+
+    if admin_data.surname is not None:
+        admin.surname = admin_data.surname
+
+    if admin_data.email is not None:
+        existing_admin = (
+            db.query(Administrator)
+            .filter(Administrator.email == admin_data.email, Administrator.id != admin_id)
+            .first()
+        )
+        if existing_admin:
+            raise HTTPException(status_code=400, detail="Email already used")
+        admin.email = admin_data.email
+
+    if admin_data.password is not None:
+        admin.password = pwd_context.hash(admin_data.password)
+
+    db.commit()
+    db.refresh(admin)
+    return admin
+
+
+def update_admin_status(db: Session, admin_email: str, status: str, rights: str) -> Administrator:
+    admin = db.query(Administrator).filter(Administrator.email == admin_email).first()
+    if not admin:
+        raise HTTPException(status_code=404, detail="Admin not found")
+
+    admin.status = status
+    admin.rights = rights
+
+    db.commit()
+    db.refresh(admin)
+    return admin
