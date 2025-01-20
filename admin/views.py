@@ -1,4 +1,3 @@
-# admin/views.py
 from datetime import timedelta
 from typing import List
 
@@ -12,10 +11,17 @@ from admin.crud import (
     get_all_admins,
     delete_admin,
     update_admin,
-    ACCESS_TOKEN_EXPIRE_MINUTES, update_admin_status
+    ACCESS_TOKEN_EXPIRE_MINUTES,
+    update_admin_status,
 )
 from admin.dependencies import get_current_admin, get_full_access_admin
-from admin.schemas import RegistrationRequest, LoginRequest, AdminOut, AdminUpdate, AdminStatusUpdate
+from admin.schemas import (
+    RegistrationRequest,
+    LoginRequest,
+    AdminOut,
+    AdminUpdate,
+    AdminStatusUpdate,
+)
 from database import get_db
 from admin.models import Administrator
 
@@ -23,13 +29,13 @@ router = APIRouter(prefix="/admin", tags=["admin"])
 
 
 @router.post("/register")
-async def register_user(user: RegistrationRequest, db: Session = Depends(get_db)):
+async def register_admin(user: RegistrationRequest, db: Session = Depends(get_db)):
     create_admin(db, user)
     return {"message": "User registered successfully"}
 
 
 @router.post("/login")
-async def login(user: LoginRequest, db: Session = Depends(get_db)):
+async def login_admin(user: LoginRequest, db: Session = Depends(get_db)):
     admin = authenticate_admin(db, user)
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
@@ -38,41 +44,43 @@ async def login(user: LoginRequest, db: Session = Depends(get_db)):
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-@router.get("/admins", response_model=List[AdminOut])
-async def read_admins(
-        db: Session = Depends(get_db),
-        current_admin: Administrator = Depends(get_current_admin)
+@router.get("/list", response_model=List[AdminOut])
+async def get_admins_list(
+    db: Session = Depends(get_db),
+    current_admin: Administrator = Depends(get_current_admin),
 ):
     admins = get_all_admins(db)
     return admins
 
 
-@router.delete("/delete/{admin_id}", response_model=AdminOut)
-async def remove_admin(
-        admin_id: int,
-        db: Session = Depends(get_db),
-        current_admin: Administrator = Depends(get_full_access_admin)
-):
-    deleted_admin = delete_admin(db, admin_id)
-    return deleted_admin
-
-
-@router.put("/update", response_model=AdminOut)
-async def modify_admin(
-        admin_data: AdminUpdate,
-        db: Session = Depends(get_db),
-        current_admin: Administrator = Depends(get_current_admin)
+@router.put("/edit", response_model=AdminOut)
+async def update_admin(
+    admin_data: AdminUpdate,
+    db: Session = Depends(get_db),
+    current_admin: Administrator = Depends(get_current_admin),
 ):
     updated_admin = update_admin(db, current_admin.id, admin_data)
     return updated_admin
 
 
-@router.put("/{admin_email}/status", response_model=AdminOut)
-async def modify_admin_status(
-        admin_email: str,
-        status_update: AdminStatusUpdate,
-        db: Session = Depends(get_db),
-        full_access_admin: Administrator = Depends(get_full_access_admin)
+@router.put("/update_status/{admin_email}", response_model=AdminOut)
+async def update_admin_status(
+    admin_email: str,
+    status_update: AdminStatusUpdate,
+    db: Session = Depends(get_db),
+    full_access_admin: Administrator = Depends(get_full_access_admin),
 ):
-    updated_admin = update_admin_status(db, admin_email, status_update.status, status_update.rights)
+    updated_admin = update_admin_status(
+        db, admin_email, status_update.status, status_update.rights
+    )
     return updated_admin
+
+
+@router.delete("/delete/{admin_id}", response_model=AdminOut)
+async def remove_admin(
+    admin_id: int,
+    db: Session = Depends(get_db),
+    full_access_admin: Administrator = Depends(get_full_access_admin),
+):
+    deleted_admin = delete_admin(db, admin_id)
+    return deleted_admin
