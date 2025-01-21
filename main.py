@@ -20,16 +20,6 @@ app.include_router(admin_router)
 app.include_router(lantern_router)
 
 
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
-
-
-@app.get("/hello/{name}")
-async def say_hello(name: str):
-    return {"message": f"Hello {name}"}
-
-
 def custom_openapi():
     if app.openapi_schema:
         return app.openapi_schema

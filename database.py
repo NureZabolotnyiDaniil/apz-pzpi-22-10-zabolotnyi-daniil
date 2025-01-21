@@ -5,11 +5,11 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-DB_NAME = "SmartLightingDB"
-DB_USER = "postgres"
-DB_PASSWORD = os.getenv("POSTGRES_PASSWORD")
-DB_HOST = "localhost"
-DB_PORT = "5433"
+DB_NAME = os.getenv("POSTGRESQL_DB_NAME")
+DB_USER = os.getenv("POSTGRESQL_DB_USER")
+DB_PASSWORD = os.getenv("POSTGRESQL_PASSWORD")
+DB_HOST = os.getenv("POSTGRESQL_DB_HOST")
+DB_PORT = os.getenv("POSTGRESQL_DB_PORT")
 
 DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 
