@@ -1,3 +1,4 @@
+from enum import Enum
 from pydantic import BaseModel
 
 
@@ -13,3 +14,8 @@ class LanternOut(BaseModel):
     active_brightness: int
     active_time: int
     status: str
+
+
+class LanternStatus(str, Enum):
+    WORKING = "working"
+    MAINTENANCE = "maintenance"

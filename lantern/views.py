@@ -1,29 +1,42 @@
-from typing import List
-
-from fastapi import APIRouter, Depends
+from typing import List, Optional
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
-
 from admin.dependencies import get_current_admin
-from admin.models import Administrator
+from models.admin import Administrator
 from database import get_db
-from lantern.crud import create_lantern, get_all_lanterns, delete_lantern
-from lantern.schemas import LanternOut, AddRequest
+from lantern.schemas import LanternOut, LanternStatus
+from lantern.crud import (
+    create_lantern_db as create_lantern,
+    get_all_lanterns_from_db as get_all_lanterns,
+    update_lantern_in_db as update_lantern,
+    get_lantern_from_db as get_lantern,
+    delete_lantern_from_db,
+)
 
 router = APIRouter(prefix="/lantern", tags=["lantern"])
 
 
 @router.post("/add")
 async def create_new_lantern(
-    lantern: AddRequest,
+    base_brightness: Optional[int] = Query(
+        0, ge=0, le=100, description="Base brightness (0-100%)"
+    ),
+    active_brightness: Optional[int] = Query(
+        0, ge=0, le=100, description="Active brightness (0-100%)"
+    ),
+    active_time: Optional[int] = Query(
+        1, ge=1, description="Active time in seconds (over 1s)"
+    ),
+    status: Optional[LanternStatus] = Query("working", description="Lantern status"),
     db: Session = Depends(get_db),
     current_admin: Administrator = Depends(get_current_admin),
 ):
-    create_lantern(db, lantern)
+    create_lantern(db, base_brightness, active_brightness, active_time, status)
     return {"message": "Lantern created successfully"}
 
 
 @router.get("/list", response_model=List[LanternOut])
-async def get_list_lanterns(
+async def get_lantern_list(
     db: Session = Depends(get_db),
     current_admin: Administrator = Depends(get_current_admin),
 ):
@@ -31,11 +44,48 @@ async def get_list_lanterns(
     return lanterns
 
 
-@router.delete("/delete/{lantern_id}", response_model=LanternOut)
-async def remove_lantern(
+@router.get("/lantern/{lantern_id}", response_model=LanternOut)
+def get_single_lantern(
     lantern_id: int,
     db: Session = Depends(get_db),
     current_admin: Administrator = Depends(get_current_admin),
 ):
-    lantern = delete_lantern(db, lantern_id)
+    lantern = get_lantern(db, lantern_id)
+    return lantern
+
+
+@router.put("/update/{lantern_id}", response_model=LanternOut)
+def update_lantern_details(
+    lantern_id: int,
+    base_brightness: Optional[int] = Query(
+        None, ge=0, le=100, description="Base brightness (0-100%)"
+    ),
+    active_brightness: Optional[int] = Query(
+        None, ge=0, le=100, description="Active brightness (0-100%)"
+    ),
+    active_time: Optional[int] = Query(
+        None, ge=1, description="Active time in seconds (over 1s)"
+    ),
+    status: Optional[LanternStatus] = Query(None, description="Lantern status"),
+    db: Session = Depends(get_db),
+    current_admin: Administrator = Depends(get_current_admin),
+):
+    updated_lantern = update_lantern(
+        db,
+        lantern_id,
+        base_brightness,
+        active_brightness,
+        active_time,
+        status,
+    )
+    return updated_lantern
+
+
+@router.delete("/delete/{lantern_id}", response_model=LanternOut)
+async def delete_lantern(
+    lantern_id: int,
+    db: Session = Depends(get_db),
+    current_admin: Administrator = Depends(get_current_admin),
+):
+    lantern = delete_lantern_from_db(db, lantern_id)
     return lantern

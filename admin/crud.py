@@ -1,13 +1,10 @@
 import os
 from datetime import datetime, timedelta
 from typing import List
-
 import jwt
 from fastapi import HTTPException, status
-
 from sqlalchemy.orm import Session
-
-from admin.models import Administrator
+from models.admin import Administrator
 from admin.schemas import RegistrationRequest, LoginRequest, AdminUpdate
 from passlib.context import CryptContext
 from dotenv import load_dotenv

@@ -1,9 +1,7 @@
 from contextlib import asynccontextmanager
 from typing import AsyncIterator
-
 from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
-
 from admin.views import router as admin_router
 from lantern.views import router as lantern_router
 

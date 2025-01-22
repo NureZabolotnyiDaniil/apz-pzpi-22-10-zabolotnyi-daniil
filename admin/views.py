@@ -1,9 +1,10 @@
 from datetime import timedelta
 from typing import List
-
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
-
+from database import get_db
+from models.admin import Administrator
+from admin.dependencies import get_current_admin, get_full_access_admin
 from admin.crud import (
     create_admin,
     authenticate_admin,
@@ -14,7 +15,6 @@ from admin.crud import (
     ACCESS_TOKEN_EXPIRE_MINUTES,
     update_admin_status,
 )
-from admin.dependencies import get_current_admin, get_full_access_admin
 from admin.schemas import (
     RegistrationRequest,
     LoginRequest,
@@ -22,8 +22,6 @@ from admin.schemas import (
     AdminUpdate,
     AdminStatusUpdate,
 )
-from database import get_db
-from admin.models import Administrator
 
 router = APIRouter(prefix="/admin", tags=["admin"])
 
@@ -54,7 +52,7 @@ async def get_admins_list(
 
 
 @router.put("/edit", response_model=AdminOut)
-async def update_admin(
+async def set_admin(
     admin_data: AdminUpdate,
     db: Session = Depends(get_db),
     current_admin: Administrator = Depends(get_current_admin),
@@ -64,7 +62,7 @@ async def update_admin(
 
 
 @router.put("/update_status/{admin_email}", response_model=AdminOut)
-async def update_admin_status(
+async def set_admin_status(
     admin_email: str,
     status_update: AdminStatusUpdate,
     db: Session = Depends(get_db),

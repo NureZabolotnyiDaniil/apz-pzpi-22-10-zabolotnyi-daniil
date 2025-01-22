@@ -1,18 +1,21 @@
 from typing import List
-
 from fastapi import HTTPException
-
 from sqlalchemy.orm import Session
-
-from lantern.models import Lantern
-from lantern.schemas import AddRequest
+from models.lantern import Lantern
 
 
-def create_lantern(db: Session, lantern: AddRequest) -> Lantern:
+def create_lantern_db(
+    db: Session,
+    base_brightness: int,
+    active_brightness: int,
+    active_time: int,
+    status: str,
+) -> Lantern:
     new_lantern = Lantern(
-        base_brightness=lantern.base_brightness,
-        active_brightness=lantern.active_brightness,
-        active_time=lantern.active_time,
+        base_brightness=base_brightness,
+        active_brightness=active_brightness,
+        active_time=active_time,
+        status=status,
     )
     db.add(new_lantern)
     db.commit()
@@ -20,11 +23,45 @@ def create_lantern(db: Session, lantern: AddRequest) -> Lantern:
     return new_lantern
 
 
-def get_all_lanterns(db: Session) -> List[Lantern]:
+def update_lantern_in_db(
+    db: Session,
+    lantern_id: int,
+    base_brightness: int,
+    active_brightness: int,
+    active_time: int,
+    status: str,
+) -> Lantern:
+    lantern = db.query(Lantern).filter(Lantern.id == lantern_id).first()
+    if not lantern:
+        raise HTTPException(status_code=404, detail="Lantern not found")
+
+    if base_brightness:
+        lantern.base_brightness = base_brightness
+    if active_brightness:
+        lantern.active_brightness = active_brightness
+    if active_time:
+        lantern.active_time = active_time
+    if status:
+        lantern.status = status
+
+    db.commit()
+    db.refresh(lantern)
+    return lantern
+
+
+def get_all_lanterns_from_db(db: Session) -> List[Lantern]:
     return db.query(Lantern).order_by(Lantern.id).all()
 
 
-def delete_lantern(db: Session, lantern_id: int) -> Lantern:
+def get_lantern_from_db(db: Session, lantern_id: int) -> Lantern:
+    lantern = db.query(Lantern).filter(Lantern.id == lantern_id).first()
+    if not lantern:
+        raise HTTPException(status_code=404, detail="Lantern not found")
+
+    return lantern
+
+
+def delete_lantern_from_db(db: Session, lantern_id: int) -> Lantern:
     lantern = db.query(Lantern).filter(Lantern.id == lantern_id).first()
     if not lantern:
         raise HTTPException(status_code=404, detail="Lantern not found")
