@@ -1,7 +1,7 @@
 from typing import List
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
-from models.lantern import Lantern
+from models.lanterns import Lantern
 
 
 def create_lantern_db(
@@ -34,7 +34,6 @@ def update_lantern_in_db(
     lantern = db.query(Lantern).filter(Lantern.id == lantern_id).first()
     if not lantern:
         raise HTTPException(status_code=404, detail="Lantern not found")
-
     if base_brightness:
         lantern.base_brightness = base_brightness
     if active_brightness:

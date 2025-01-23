@@ -3,7 +3,7 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 from admin.crud import SECRET_KEY, ALGORITHM
-from models.admin import Administrator
+from models.admins import Admin
 from database import get_db
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/admin/login")
@@ -11,7 +11,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/admin/login")
 
 def get_current_admin(
     token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)
-) -> Administrator:
+) -> Admin:
     print("Получен токен:", token)
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
@@ -27,7 +27,7 @@ def get_current_admin(
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token"
         )
-    admin = db.query(Administrator).filter(Administrator.email == email).first()
+    admin = db.query(Admin).filter(Admin.email == email).first()
     if admin is None:
         print("Администратор не найден для email:", email)
         raise HTTPException(
@@ -37,8 +37,8 @@ def get_current_admin(
 
 
 def get_full_access_admin(
-    current_admin: Administrator = Depends(get_current_admin),
-) -> Administrator:
+    current_admin: Admin = Depends(get_current_admin),
+) -> Admin:
     """
     Проверка доступа: только администратор с активным статусом и полными правами имеет доступ.
     """

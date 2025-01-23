@@ -2,7 +2,7 @@ from typing import List, Optional
 from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 from admin.dependencies import get_current_admin
-from models.admin import Administrator
+from models.admins import Admin
 from database import get_db
 from lantern.schemas import LanternOut, LanternStatus
 from lantern.crud import (
@@ -18,18 +18,16 @@ router = APIRouter(prefix="/lantern", tags=["lantern"])
 
 @router.post("/add")
 async def create_new_lantern(
-    base_brightness: Optional[int] = Query(
+    base_brightness: int = Query(
         0, ge=0, le=100, description="Base brightness (0-100%)"
     ),
-    active_brightness: Optional[int] = Query(
+    active_brightness: int = Query(
         0, ge=0, le=100, description="Active brightness (0-100%)"
     ),
-    active_time: Optional[int] = Query(
-        1, ge=1, description="Active time in seconds (over 1s)"
-    ),
+    active_time: int = Query(1, ge=1, description="Active time in seconds (over 1s)"),
     status: Optional[LanternStatus] = Query("working", description="Lantern status"),
     db: Session = Depends(get_db),
-    current_admin: Administrator = Depends(get_current_admin),
+    current_admin: Admin = Depends(get_current_admin),
 ):
     create_lantern(db, base_brightness, active_brightness, active_time, status)
     return {"message": "Lantern created successfully"}
@@ -38,7 +36,7 @@ async def create_new_lantern(
 @router.get("/list", response_model=List[LanternOut])
 async def get_lantern_list(
     db: Session = Depends(get_db),
-    current_admin: Administrator = Depends(get_current_admin),
+    current_admin: Admin = Depends(get_current_admin),
 ):
     lanterns = get_all_lanterns(db)
     return lanterns
@@ -48,7 +46,7 @@ async def get_lantern_list(
 def get_single_lantern(
     lantern_id: int,
     db: Session = Depends(get_db),
-    current_admin: Administrator = Depends(get_current_admin),
+    current_admin: Admin = Depends(get_current_admin),
 ):
     lantern = get_lantern(db, lantern_id)
     return lantern
@@ -68,7 +66,7 @@ def update_lantern_details(
     ),
     status: Optional[LanternStatus] = Query(None, description="Lantern status"),
     db: Session = Depends(get_db),
-    current_admin: Administrator = Depends(get_current_admin),
+    current_admin: Admin = Depends(get_current_admin),
 ):
     updated_lantern = update_lantern(
         db,
@@ -85,7 +83,7 @@ def update_lantern_details(
 async def delete_lantern(
     lantern_id: int,
     db: Session = Depends(get_db),
-    current_admin: Administrator = Depends(get_current_admin),
+    current_admin: Admin = Depends(get_current_admin),
 ):
     lantern = delete_lantern_from_db(db, lantern_id)
     return lantern

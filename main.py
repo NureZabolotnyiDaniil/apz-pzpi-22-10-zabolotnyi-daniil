@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
 from admin.views import router as admin_router
 from lantern.views import router as lantern_router
+from renovation.views import router as renovation_router
 
 
 @asynccontextmanager
@@ -16,6 +17,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
 app = FastAPI(openapi_url="/openapi.json", lifespan=lifespan)
 app.include_router(admin_router)
 app.include_router(lantern_router)
+app.include_router(renovation_router)
 
 
 def custom_openapi():

@@ -3,7 +3,7 @@ from typing import List
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from database import get_db
-from models.admin import Administrator
+from models.admins import Admin
 from admin.dependencies import get_current_admin, get_full_access_admin
 from admin.crud import (
     create_admin,
@@ -45,7 +45,7 @@ async def login_admin(user: LoginRequest, db: Session = Depends(get_db)):
 @router.get("/list", response_model=List[AdminOut])
 async def get_admins_list(
     db: Session = Depends(get_db),
-    current_admin: Administrator = Depends(get_current_admin),
+    current_admin: Admin = Depends(get_current_admin),
 ):
     admins = get_all_admins(db)
     return admins
@@ -55,7 +55,7 @@ async def get_admins_list(
 async def set_admin(
     admin_data: AdminUpdate,
     db: Session = Depends(get_db),
-    current_admin: Administrator = Depends(get_current_admin),
+    current_admin: Admin = Depends(get_current_admin),
 ):
     updated_admin = update_admin(db, current_admin.id, admin_data)
     return updated_admin
@@ -66,7 +66,7 @@ async def set_admin_status(
     admin_email: str,
     status_update: AdminStatusUpdate,
     db: Session = Depends(get_db),
-    full_access_admin: Administrator = Depends(get_full_access_admin),
+    full_access_admin: Admin = Depends(get_full_access_admin),
 ):
     updated_admin = update_admin_status(
         db, admin_email, status_update.status, status_update.rights
@@ -78,7 +78,7 @@ async def set_admin_status(
 async def remove_admin(
     admin_id: int,
     db: Session = Depends(get_db),
-    full_access_admin: Administrator = Depends(get_full_access_admin),
+    full_access_admin: Admin = Depends(get_full_access_admin),
 ):
     deleted_admin = delete_admin(db, admin_id)
     return deleted_admin

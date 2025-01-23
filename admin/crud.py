@@ -4,7 +4,7 @@ from typing import List
 import jwt
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
-from models.admin import Administrator
+from models.admins import Admin
 from admin.schemas import RegistrationRequest, LoginRequest, AdminUpdate
 from passlib.context import CryptContext
 from dotenv import load_dotenv
@@ -33,15 +33,13 @@ def create_access_token(data: dict, expires_delta: timedelta = None) -> str:
     return encoded_jwt
 
 
-def create_admin(db: Session, user: RegistrationRequest) -> Administrator:
-    existing_admin = (
-        db.query(Administrator).filter(Administrator.email == user.email).first()
-    )
+def create_admin(db: Session, user: RegistrationRequest) -> Admin:
+    existing_admin = db.query(Admin).filter(Admin.email == user.email).first()
     if existing_admin:
         raise HTTPException(status_code=400, detail="Email already registered")
 
     hashed_password = pwd_context.hash(user.password)
-    new_admin = Administrator(
+    new_admin = Admin(
         first_name=user.first_name,
         surname=user.surname,
         email=user.email,
@@ -53,10 +51,8 @@ def create_admin(db: Session, user: RegistrationRequest) -> Administrator:
     return new_admin
 
 
-def authenticate_admin(db: Session, login_data: LoginRequest) -> Administrator:
-    admin = (
-        db.query(Administrator).filter(Administrator.email == login_data.email).first()
-    )
+def authenticate_admin(db: Session, login_data: LoginRequest) -> Admin:
+    admin = db.query(Admin).filter(Admin.email == login_data.email).first()
     if not admin:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -78,12 +74,12 @@ def authenticate_admin(db: Session, login_data: LoginRequest) -> Administrator:
     return admin
 
 
-def get_all_admins(db: Session) -> List[Administrator]:
-    return db.query(Administrator).order_by(Administrator.id).all()
+def get_all_admins(db: Session) -> List[Admin]:
+    return db.query(Admin).order_by(Admin.id).all()
 
 
-def update_admin(db: Session, admin_id: int, admin_data: AdminUpdate) -> Administrator:
-    admin = db.query(Administrator).filter(Administrator.id == admin_id).first()
+def update_admin(db: Session, admin_id: int, admin_data: AdminUpdate) -> Admin:
+    admin = db.query(Admin).filter(Admin.id == admin_id).first()
     if not admin:
         raise HTTPException(status_code=404, detail="Admin not found")
 
@@ -95,10 +91,8 @@ def update_admin(db: Session, admin_id: int, admin_data: AdminUpdate) -> Adminis
 
     if admin_data.email is not None:
         existing_admin = (
-            db.query(Administrator)
-            .filter(
-                Administrator.email == admin_data.email, Administrator.id != admin_id
-            )
+            db.query(Admin)
+            .filter(Admin.email == admin_data.email, Admin.id != admin_id)
             .first()
         )
         if existing_admin:
@@ -115,8 +109,8 @@ def update_admin(db: Session, admin_id: int, admin_data: AdminUpdate) -> Adminis
 
 def update_admin_status(
     db: Session, admin_email: str, status: str, rights: str
-) -> Administrator:
-    admin = db.query(Administrator).filter(Administrator.email == admin_email).first()
+) -> Admin:
+    admin = db.query(Admin).filter(Admin.email == admin_email).first()
     if not admin:
         raise HTTPException(status_code=404, detail="Admin not found")
 
@@ -128,8 +122,8 @@ def update_admin_status(
     return admin
 
 
-def delete_admin(db: Session, admin_id: int) -> Administrator:
-    admin = db.query(Administrator).filter(Administrator.id == admin_id).first()
+def delete_admin(db: Session, admin_id: int) -> Admin:
+    admin = db.query(Admin).filter(Admin.id == admin_id).first()
     if not admin:
         raise HTTPException(status_code=404, detail="Admin not found")
     db.delete(admin)
