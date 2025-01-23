@@ -77,9 +77,9 @@ def get_single_renovation(
 ):
     renovation = get_renovation(db, renovation_id)
 
-    renovation_formated = RenovationOut(**vars(renovation))
-    renovation_formated.date = renovation.date.strftime(DATETIME_FORMAT)
-    return renovation_formated
+    formatted_renovation = RenovationOut(**vars(renovation))
+    formatted_renovation.date = renovation.date.strftime(DATETIME_FORMAT)
+    return formatted_renovation
 
 
 @router.put("/update/{renovation_id}", response_model=RenovationOut)
@@ -111,9 +111,9 @@ def update_renovation_details(
         status,
     )
 
-    renovation_formated = RenovationOut(**vars(renovation))
-    renovation_formated.date = renovation.date.strftime(DATETIME_FORMAT)
-    return renovation_formated
+    formatted_renovation = RenovationOut(**vars(renovation))
+    formatted_renovation.date = renovation.date.strftime(DATETIME_FORMAT)
+    return formatted_renovation
 
 
 @router.delete("/delete/{renovation_id}", response_model=RenovationOut)
@@ -124,6 +124,6 @@ async def delete_renovation(
 ):
     renovation = delete_renovation_from_db(db, renovation_id)
 
-    renovation_formated = RenovationOut(**vars(renovation))
-    renovation_formated.date = renovation.date.strftime(DATETIME_FORMAT)
-    return renovation_formated
+    formatted_renovation = RenovationOut(**vars(renovation))
+    formatted_renovation.date = renovation.date.strftime(DATETIME_FORMAT)
+    return formatted_renovation
