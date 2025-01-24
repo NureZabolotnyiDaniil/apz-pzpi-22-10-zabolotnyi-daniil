@@ -4,22 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="37733569-f495-4ef8-9483-f921d0b19664" name="Changes" comment="Upgraded names of models. Added &quot;renovations&quot; &amp; &quot;breakdowns&quot;">
-      <change afterPath="$PROJECT_DIR$/models/breakdowns.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/renovations.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/renovation/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/renovation/crud.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/renovation/schemas.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/renovation/views.py" afterDir="false" />
+    <list default="true" id="37733569-f495-4ef8-9483-f921d0b19664" name="Changes" comment="Some renovation updates">
+      <change afterPath="$PROJECT_DIR$/breakdown/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/breakdown/crud.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/breakdown/schemas.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/breakdown/views.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/models/parks.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/park/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/park/crud.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/park/schemas.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/park/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/crud.py" beforeDir="false" afterPath="$PROJECT_DIR$/admin/crud.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/dependencies.py" beforeDir="false" afterPath="$PROJECT_DIR$/admin/dependencies.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/admin/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lantern/crud.py" beforeDir="false" afterPath="$PROJECT_DIR$/lantern/crud.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lantern/schemas.py" beforeDir="false" afterPath="$PROJECT_DIR$/lantern/schemas.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lantern/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/lantern/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/admins.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/lantern.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/lanterns.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/admins.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/admins.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/breakdowns.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/breakdowns.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/lanterns.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/lanterns.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,26 +53,26 @@
     <option name="showLibraryContents" value="true" />
     <option name="sortKey" value="BY_TIME_DESCENDING" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
-    &quot;FastAPI.SmartLighting.executor&quot;: &quot;Run&quot;,
-    &quot;Python.main.executor&quot;: &quot;Debug&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/danil/PycharmProjects/SmartLighting&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.stylelint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.stylelint&quot;: &quot;&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.black.configuration.BlackFormatterConfigurable&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
+    "FastAPI.SmartLighting.executor": "Run",
+    "Python.main.executor": "Debug",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "C:/Users/danil/PycharmProjects/SmartLighting/models",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.stylelint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.stylelint": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "com.jetbrains.python.black.configuration.BlackFormatterConfigurable",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
       <console-settings module-name="SmartLighting" is-module-sdk="true">
@@ -81,7 +83,9 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\danil\PycharmProjects\SmartLighting\models" />
       <recent name="C:\Users\danil\PycharmProjects\SmartLighting" />
+      <recent name="C:\Users\danil\PycharmProjects\SmartLighting\breakdown" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\danil\PycharmProjects\SmartLighting\models" />
@@ -146,7 +150,9 @@
       <workItem from="1737420370924" duration="67000" />
       <workItem from="1737471399763" duration="10895000" />
       <workItem from="1737561488227" duration="7176000" />
-      <workItem from="1737642248977" duration="15268000" />
+      <workItem from="1737642248977" duration="18984000" />
+      <workItem from="1737686292335" duration="2049000" />
+      <workItem from="1737733194632" duration="7862000" />
     </task>
     <task id="LOCAL-00001" summary="General setup + admin authorisation structure">
       <option name="closed" value="true" />
@@ -252,7 +258,31 @@
       <option name="project" value="LOCAL" />
       <updated>1737563016570</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Upgraded names of models. Added &quot;renovations&quot; &amp; &quot;breakdowns&quot;">
+      <option name="closed" value="true" />
+      <created>1737671375340</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1737671375340</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Added renovation endpoints">
+      <option name="closed" value="true" />
+      <created>1737671385511</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1737671385511</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Some renovation updates">
+      <option name="closed" value="true" />
+      <created>1737671986171</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1737671986171</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -288,10 +318,13 @@
     <MESSAGE value="Deleted shit" />
     <MESSAGE value=".idea update" />
     <MESSAGE value="Moved models to the separate package. Upgraded imports view" />
-    <option name="LAST_COMMIT_MESSAGE" value="Moved models to the separate package. Upgraded imports view" />
+    <MESSAGE value="Upgraded names of models. Added &quot;renovations&quot; &amp; &quot;breakdowns&quot;" />
+    <MESSAGE value="Added renovation endpoints" />
+    <MESSAGE value="Some renovation updates" />
+    <option name="LAST_COMMIT_MESSAGE" value="Some renovation updates" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/SmartLighting$main.coverage" NAME="main Coverage Results" MODIFIED="1737209192436" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/SmartLighting$SmartLighting.coverage" NAME="SmartLighting Coverage Results" MODIFIED="1737670141146" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/SmartLighting$SmartLighting.coverage" NAME="SmartLighting Coverage Results" MODIFIED="1737742451640" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
 </project>

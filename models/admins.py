@@ -1,4 +1,6 @@
 from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
+
 from database import Base
 
 
@@ -11,3 +13,5 @@ class Admin(Base):
     password = Column(String, nullable=False)
     status = Column(String, nullable=False, default="inactive")
     rights = Column(String, nullable=False, default="restricted_access")
+
+    parks = relationship("Park", back_populates="admin")

@@ -26,10 +26,11 @@ async def create_new_lantern(
     ),
     active_time: int = Query(1, ge=1, description="Active time in seconds (over 1s)"),
     status: Optional[LanternStatus] = Query("working", description="Lantern status"),
+    park_id: Optional[int] = Query(None, description="Park"),
     db: Session = Depends(get_db),
     current_admin: Admin = Depends(get_current_admin),
 ):
-    create_lantern(db, base_brightness, active_brightness, active_time, status)
+    create_lantern(db, base_brightness, active_brightness, active_time, status, park_id)
     return {"message": "Lantern created successfully"}
 
 
@@ -65,6 +66,7 @@ def update_lantern_details(
         None, ge=1, description="Active time in seconds (over 1s)"
     ),
     status: Optional[LanternStatus] = Query(None, description="Lantern status"),
+    park_id: Optional[int] = Query(None, description="Park"),
     db: Session = Depends(get_db),
     current_admin: Admin = Depends(get_current_admin),
 ):
@@ -75,6 +77,7 @@ def update_lantern_details(
         active_brightness,
         active_time,
         status,
+        park_id,
     )
     return updated_lantern
 
