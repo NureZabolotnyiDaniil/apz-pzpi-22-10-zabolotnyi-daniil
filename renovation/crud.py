@@ -69,7 +69,6 @@ def update_renovation_in_db(
             raise HTTPException(status_code=404, detail="Lantern not found")
         renovation.lantern_id = lantern_id
 
-    # if repairman_email != "email@example.com":
     if repairman_email:
         repairman_id = (
             db.query(Repairman.id).filter(Repairman.email == repairman_email).scalar()
