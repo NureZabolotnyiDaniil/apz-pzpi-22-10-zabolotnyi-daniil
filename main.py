@@ -7,6 +7,7 @@ from lantern.views import router as lantern_router
 from renovation.views import router as renovation_router
 from breakdown.views import router as breakdown_router
 from park.views import router as park_router
+from statistics.views import router as statistics_router
 
 
 @asynccontextmanager
@@ -22,6 +23,7 @@ app.include_router(lantern_router)
 app.include_router(renovation_router)
 app.include_router(breakdown_router)
 app.include_router(park_router)
+app.include_router(statistics_router)
 
 
 def custom_openapi():

@@ -1,6 +1,6 @@
-import time
 from typing import List, Optional
 from fastapi import APIRouter, Depends, Query, HTTPException
+from pydantic import EmailStr
 from sqlalchemy.orm import Session
 from admin.dependencies import get_current_admin
 from models.admins import Admin
@@ -35,6 +35,10 @@ async def create_new_renovation(
         description=f"Time in format {TIME_FORMAT}",
     ),
     status: RenovationStatus = Query("planned", description="Renovation status"),
+    cost: int = Query(0, description="Cost of the renovation (only integers)"),
+    repairman_email: EmailStr = Query(
+        None, description="Repairer responsible for the renovation"
+    ),
     db: Session = Depends(get_db),
     current_admin: Admin = Depends(get_current_admin),
 ):
@@ -44,7 +48,9 @@ async def create_new_renovation(
 
         datetime_combined = datetime.combine(date_obj, time_obj.time())
 
-        create_renovation(db, lantern_id, datetime_combined, status)
+        create_renovation(
+            db, lantern_id, datetime_combined, status, cost, repairman_email
+        )
         return {"message": "Renovation added successfully"}
     except ValueError:
         raise HTTPException(
@@ -97,6 +103,10 @@ def update_renovation_details(
         description=f"Time in format {TIME_FORMAT}",
     ),
     status: Optional[RenovationStatus] = Query(None, description="Renovation status"),
+    cost: int = Query(None, description="Cost of the renovation (only integers)"),
+    repairman_email: EmailStr = Query(
+        None, description="Repairer responsible for the renovation"
+    ),
     db: Session = Depends(get_db),
     current_admin: Admin = Depends(get_current_admin),
 ):
@@ -109,6 +119,8 @@ def update_renovation_details(
         DATE_FORMAT,
         TIME_FORMAT,
         status,
+        cost,
+        repairman_email,
     )
 
     formatted_renovation = RenovationOut(**vars(renovation))

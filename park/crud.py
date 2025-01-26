@@ -1,17 +1,15 @@
-from datetime import datetime
 from typing import List
 from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
 from models.admins import Admin
-from models.lanterns import Lantern
 from models.parks import Park
 
 
 def create_park_db(
     db: Session,
     name: str,
-    location: str,
+    address: str,
     admin_id: int,
 ) -> Park:
     admin = db.query(Admin).filter(Admin.id == admin_id).first()
@@ -20,7 +18,7 @@ def create_park_db(
 
     new_park = Park(
         name=name,
-        location=location,
+        address=address,
         admin_id=admin_id,
     )
     db.add(new_park)
@@ -33,7 +31,7 @@ def update_park_in_db(
     db: Session,
     park_id: int,
     name: str,
-    location: str,
+    address: str,
     admin_id: int,
 ) -> Park:
 
@@ -45,8 +43,8 @@ def update_park_in_db(
         raise HTTPException(status_code=404, detail="Admin not found")
     if name:
         park.name = name
-    if location:
-        park.location = location
+    if address:
+        park.address = address
     if admin_id:
         park.admin_id = admin_id
 

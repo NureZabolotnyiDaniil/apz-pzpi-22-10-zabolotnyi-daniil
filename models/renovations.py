@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
+from models.repairmans import Repairman
 
 from database import Base
 
@@ -14,3 +15,7 @@ class Renovation(Base):
 
     date = Column(DateTime, nullable=False)
     status = Column(String, nullable=False, default="planned")
+    cost = Column(Integer, nullable=False, default=0)
+
+    repairman_id = Column(Integer, ForeignKey("repairmans.id"), nullable=True)
+    repairman = relationship("Repairman", back_populates="renovations")

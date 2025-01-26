@@ -1,5 +1,5 @@
-from typing import List, Optional
-from fastapi import APIRouter, Depends, Query, HTTPException
+from typing import List
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 from admin.dependencies import get_current_admin
 from models.admins import Admin
@@ -23,7 +23,7 @@ async def create_new_park(
         "Центральний парк культури та відпочинку",
         description="Name of the park",
     ),
-    location: str = Query(
+    address: str = Query(
         "вулиця Сумська, 81, Харків, Харківська область, Україна, 61000",
         description="Address, city, state of the park",
     ),
@@ -31,7 +31,7 @@ async def create_new_park(
     db: Session = Depends(get_db),
     current_admin: Admin = Depends(get_current_admin),
 ):
-    create_park(db, name, location, admin_id)
+    create_park(db, name, address, admin_id)
     return {"message": "Park added successfully"}
 
 
@@ -61,7 +61,7 @@ def update_park_details(
         None,
         description="Name of the park",
     ),
-    location: str = Query(
+    address: str = Query(
         None,
         description="Address, city, state of the park",
     ),
@@ -69,7 +69,7 @@ def update_park_details(
     db: Session = Depends(get_db),
     current_admin: Admin = Depends(get_current_admin),
 ):
-    park = update_park(db, park_id, name, location, admin_id)
+    park = update_park(db, park_id, name, address, admin_id)
     return park
 
 

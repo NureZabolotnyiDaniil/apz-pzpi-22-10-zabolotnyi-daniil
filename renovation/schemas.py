@@ -1,5 +1,7 @@
 from datetime import datetime
 from enum import Enum
+from typing import Optional
+
 from pydantic import BaseModel
 
 
@@ -7,6 +9,8 @@ class AddRequest(BaseModel):
     lantern_id: int
     date: datetime
     status: str
+    cost: int
+    repairman_id: Optional[int]
 
 
 class RenovationOut(BaseModel):
@@ -14,6 +18,8 @@ class RenovationOut(BaseModel):
     lantern_id: int
     date: datetime
     status: str
+    cost: int
+    repairman_id: Optional[int]
 
 
 class RenovationStatus(str, Enum):
