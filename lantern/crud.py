@@ -41,19 +41,27 @@ def update_lantern_in_db(
     lantern = db.query(Lantern).filter(Lantern.id == lantern_id).first()
     if not lantern:
         raise HTTPException(status_code=404, detail="Lantern not found")
+
     if base_brightness:
         lantern.base_brightness = base_brightness
+
     if active_brightness:
         lantern.active_brightness = active_brightness
+
     if active_time:
         lantern.active_time = active_time
+
     if status:
         lantern.status = status
-    if park_id:
-        park = db.query(Park).filter(Park.id == park_id).first()
-        if not park:
-            raise HTTPException(status_code=404, detail="Park not found")
-        lantern.park_id = park_id
+
+    if park_id is not None:
+        if park_id == 0:
+            lantern.park_id = None
+        else:
+            park = db.query(Park).filter(Park.id == park_id).first()
+            if not park:
+                raise HTTPException(status_code=404, detail="Park not found")
+            lantern.park_id = park_id
 
     db.commit()
     db.refresh(lantern)

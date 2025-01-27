@@ -56,6 +56,7 @@ def update_renovation_in_db(
     time_format: str,
     status: str,
     cost: int,
+    change_repairman_email: bool,
     repairman_email: EmailStr,
 ) -> Renovation:
 
@@ -69,16 +70,20 @@ def update_renovation_in_db(
             raise HTTPException(status_code=404, detail="Lantern not found")
         renovation.lantern_id = lantern_id
 
-    if repairman_email:
-        repairman_id = (
-            db.query(Repairman.id).filter(Repairman.email == repairman_email).scalar()
-        )
-        if not repairman_id:
-            raise HTTPException(
-                status_code=404,
-                detail=f"Repairman with email: {repairman_email} not found",
+    if change_repairman_email:
+        renovation.repairman_id = None
+        if repairman_email:
+            repairman_id = (
+                db.query(Repairman.id)
+                .filter(Repairman.email == repairman_email)
+                .scalar()
             )
-        renovation.repairman_id = repairman_id
+            if not repairman_id:
+                raise HTTPException(
+                    status_code=404,
+                    detail=f"Repairman with email: {repairman_email} not found",
+                )
+            renovation.repairman_id = repairman_id
 
     if date:
         try:

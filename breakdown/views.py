@@ -84,9 +84,7 @@ def get_single_breakdown(
 @router.put("/update/{breakdown_id}", response_model=BreakdownOut)
 def update_breakdown_details(
     breakdown_id: int,
-    lantern_id: Optional[int] = Query(
-        None, description="Foreign key of the table 'lanterns'"
-    ),
+    lantern_id: int = Query(None, description="Foreign key of the table 'lanterns'"),
     date: str = Query(
         None,
         description=f"Date in format {DATE_FORMAT}",
@@ -95,7 +93,9 @@ def update_breakdown_details(
         None,
         description=f"Time in format {TIME_FORMAT}",
     ),
-    description: Optional[str] = Query(default=None, description="Description"),
+    description: str = Query(
+        default=None, description="Description. Enter 'none' to reset the value"
+    ),
     db: Session = Depends(get_db),
     current_admin: Admin = Depends(get_current_admin),
 ):

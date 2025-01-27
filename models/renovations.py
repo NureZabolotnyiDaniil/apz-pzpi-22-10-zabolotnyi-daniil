@@ -10,7 +10,7 @@ class Renovation(Base):
 
     id = Column(Integer, primary_key=True, index=True)
 
-    lantern_id = Column(Integer, ForeignKey("lanterns.id"), nullable=False)
+    lantern_id = Column(Integer, ForeignKey("lanterns.id"), nullable=True)
     lantern = relationship("Lantern", back_populates="renovations")
 
     date = Column(DateTime, nullable=False)

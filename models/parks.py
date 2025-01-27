@@ -10,7 +10,7 @@ class Park(Base):
     name = Column(String, nullable=False)
     address = Column(String, nullable=False)
 
-    admin_id = Column(Integer, ForeignKey("admins.id"), nullable=False)
+    admin_id = Column(Integer, ForeignKey("admins.id"), nullable=True)
     admin = relationship("Admin", back_populates="parks")
 
     lanterns = relationship("Lantern", back_populates="park")

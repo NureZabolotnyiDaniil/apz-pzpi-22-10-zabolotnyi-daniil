@@ -11,7 +11,7 @@ from repairman.crud import (
     update_repairman_in_db as update_repairman,
     get_all_repairmans_from_db as get_all_repairmans,
     get_repairman_from_db as get_repairman,
-    delete_repairman_from_db as delete_repairman,
+    delete_repairman_from_db,
 )
 
 router = APIRouter(prefix="/repairman", tags=["repairman"])
@@ -27,9 +27,7 @@ async def create_new_repairman(
         None,
         description="Surname",
     ),
-    email: EmailStr = Query(
-        None, description="Repairer responsible for the renovation"
-    ),
+    email: EmailStr = Query(None, description="Repairer email"),
     company_email: EmailStr = Query(
         None, description="Company from which the repairer is from (if existing)"
     ),
@@ -64,17 +62,20 @@ def update_repairman_details(
     repairman_id: int,
     first_name: str = Query(
         None,
-        description="First name",
+        description="First name. Enter 'none' to reset the value",
     ),
     surname: str = Query(
         None,
-        description="Surname",
+        description="Surname. Enter 'none' to reset the value",
     ),
-    email: EmailStr = Query(
-        None, description="Repairer responsible for the renovation"
+    email: EmailStr = Query(None, description="Repairer email"),
+    change_company_email: bool = Query(
+        False,
+        description="True - if you want to change the company email",
     ),
     company_email: EmailStr = Query(
-        None, description="Company from which the repairer is from (if existing)"
+        None,
+        description="Company from which the repairer is from. Leave the field blank to reset the value",
     ),
     db: Session = Depends(get_db),
     current_admin: Admin = Depends(get_current_admin),
@@ -85,6 +86,7 @@ def update_repairman_details(
         first_name,
         surname,
         email,
+        change_company_email,
         company_email,
     )
     return repairman
@@ -96,5 +98,5 @@ async def delete_repairman(
     db: Session = Depends(get_db),
     current_admin: Admin = Depends(get_current_admin),
 ):
-    repairman = delete_repairman(db, repairman_id)
+    repairman = delete_repairman_from_db(db, repairman_id)
     return repairman

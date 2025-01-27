@@ -56,17 +56,17 @@ def get_single_lantern(
 @router.put("/update/{lantern_id}", response_model=LanternOut)
 def update_lantern_details(
     lantern_id: int,
-    base_brightness: Optional[int] = Query(
+    base_brightness: int = Query(
         None, ge=0, le=100, description="Base brightness (0-100%)"
     ),
-    active_brightness: Optional[int] = Query(
+    active_brightness: int = Query(
         None, ge=0, le=100, description="Active brightness (0-100%)"
     ),
-    active_time: Optional[int] = Query(
+    active_time: int = Query(
         None, ge=1, description="Active time in seconds (over 1s)"
     ),
-    status: Optional[LanternStatus] = Query(None, description="Lantern status"),
-    park_id: Optional[int] = Query(None, description="Park"),
+    status: LanternStatus = Query(None, description="Lantern status"),
+    park_id: int = Query(None, description="Park. Enter '0' to reset the value"),
     db: Session = Depends(get_db),
     current_admin: Admin = Depends(get_current_admin),
 ):

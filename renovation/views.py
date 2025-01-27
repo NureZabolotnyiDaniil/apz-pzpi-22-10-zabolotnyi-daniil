@@ -104,8 +104,13 @@ def update_renovation_details(
     ),
     status: Optional[RenovationStatus] = Query(None, description="Renovation status"),
     cost: int = Query(None, description="Cost of the renovation (only integers)"),
+    change_repairman_email: bool = Query(
+        False,
+        description="True - if you want to change the repairman email",
+    ),
     repairman_email: EmailStr = Query(
-        None, description="Repairer responsible for the renovation"
+        None,
+        description="Repairer responsible for the renovation. Leave the field blank to reset the value",
     ),
     db: Session = Depends(get_db),
     current_admin: Admin = Depends(get_current_admin),
@@ -120,6 +125,7 @@ def update_renovation_details(
         TIME_FORMAT,
         status,
         cost,
+        change_repairman_email,
         repairman_email,
     )
 
