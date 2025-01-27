@@ -5,14 +5,6 @@ from typing import Optional
 from pydantic import BaseModel
 
 
-class AddRequest(BaseModel):
-    lantern_id: int
-    date: datetime
-    status: str
-    cost: int
-    repairman_id: Optional[int]
-
-
 class RenovationOut(BaseModel):
     id: int
     lantern_id: int
