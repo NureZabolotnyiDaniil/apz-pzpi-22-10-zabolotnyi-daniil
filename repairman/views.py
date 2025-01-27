@@ -14,7 +14,7 @@ from repairman.crud import (
     delete_repairman_from_db as delete_repairman,
 )
 
-router = APIRouter(prefix="/admin", tags=["admin"])
+router = APIRouter(prefix="/repairman", tags=["repairman"])
 
 
 @router.post("/add")
