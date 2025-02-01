@@ -4,28 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="37733569-f495-4ef8-9483-f921d0b19664" name="Changes" comment="Deleted AddRequest from schemas of every endpoint group">
-      <change afterPath="$PROJECT_DIR$/company/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/company/crud.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/company/schemas.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/company/views.py" afterDir="false" />
+    <list default="true" id="37733569-f495-4ef8-9483-f921d0b19664" name="Changes" comment="Switched to supabase.">
       <change afterPath="$PROJECT_DIR$/statistics/services/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/statistics/services/energy_consumption.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/statistics/services/energy_savings.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/statistics/services/repair_stats.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/statistics/utils/__init__.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/statistics/utils/time_formatters.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/breakdown/crud.py" beforeDir="false" afterPath="$PROJECT_DIR$/breakdown/crud.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/breakdown/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/breakdown/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lantern/crud.py" beforeDir="false" afterPath="$PROJECT_DIR$/lantern/crud.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lantern/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/lantern/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/companies.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/companies.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/parks.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/parks.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/renovations.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/renovations.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/renovation/crud.py" beforeDir="false" afterPath="$PROJECT_DIR$/renovation/crud.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/renovation/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/renovation/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repairman/crud.py" beforeDir="false" afterPath="$PROJECT_DIR$/repairman/crud.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repairman/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/repairman/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/statistics/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/statistics/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,6 +31,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/text" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 6
@@ -65,7 +55,7 @@
     &quot;Python.main.executor&quot;: &quot;Debug&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/danil/PycharmProjects/SmartLighting&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/danil/PycharmProjects/SmartLighting/texts&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.stylelint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -73,7 +63,8 @@
     &quot;node.js.selected.package.stylelint&quot;: &quot;&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.reader.mode&quot;,
+    &quot;two.files.diff.last.used.file&quot;: &quot;C:/Users/danil/PycharmProjects/SmartLighting/texts&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -87,17 +78,18 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\danil\PycharmProjects\SmartLighting\statistics\efficiency_statistics" />
       <recent name="C:\Users\danil\PycharmProjects\SmartLighting" />
       <recent name="C:\Users\danil\PycharmProjects\SmartLighting\repairman" />
       <recent name="C:\Users\danil\PycharmProjects\SmartLighting\statistics" />
       <recent name="C:\Users\danil\PycharmProjects\SmartLighting\models" />
-      <recent name="C:\Users\danil\PycharmProjects\SmartLighting\breakdown" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\danil\PycharmProjects\SmartLighting\statistics" />
+      <recent name="C:\Users\danil\PycharmProjects\SmartLighting\statistics\park_statistics" />
       <recent name="C:\Users\danil\PycharmProjects\SmartLighting\models" />
       <recent name="C:\Users\danil\PycharmProjects\SmartLighting\model" />
       <recent name="C:\Users\danil\PycharmProjects\SmartLighting\admin" />
-      <recent name="C:\Users\danil\PycharmProjects\SmartLighting" />
     </key>
   </component>
   <component name="RunManager">
@@ -160,7 +152,12 @@
       <workItem from="1737686292335" duration="2049000" />
       <workItem from="1737733194632" duration="27222000" />
       <workItem from="1737907791124" duration="7467000" />
-      <workItem from="1737986510233" duration="12285000" />
+      <workItem from="1737986510233" duration="18736000" />
+      <workItem from="1738081012000" duration="1547000" />
+      <workItem from="1738082592656" duration="7181000" />
+      <workItem from="1738243765987" duration="3859000" />
+      <workItem from="1738274749045" duration="9720000" />
+      <workItem from="1738358539415" duration="3209000" />
     </task>
     <task id="LOCAL-00001" summary="General setup + admin authorisation structure">
       <option name="closed" value="true" />
@@ -338,7 +335,15 @@
       <option name="project" value="LOCAL" />
       <updated>1737988267713</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="Adding company endpoints. Significant changes in almost all endpoints">
+      <option name="closed" value="true" />
+      <created>1738000932171</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1738000932171</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -382,10 +387,11 @@
     <MESSAGE value="Repairmans endpoints" />
     <MESSAGE value="Repairmans mini-fixes" />
     <MESSAGE value="Deleted AddRequest from schemas of every endpoint group" />
-    <option name="LAST_COMMIT_MESSAGE" value="Deleted AddRequest from schemas of every endpoint group" />
+    <MESSAGE value="Adding company endpoints. Significant changes in almost all endpoints" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adding company endpoints. Significant changes in almost all endpoints" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/SmartLighting$main.coverage" NAME="main Coverage Results" MODIFIED="1737209192436" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/SmartLighting$SmartLighting.coverage" NAME="SmartLighting Coverage Results" MODIFIED="1737996713346" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/SmartLighting$SmartLighting.coverage" NAME="SmartLighting Coverage Results" MODIFIED="1738377018361" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
   </component>
 </project>
