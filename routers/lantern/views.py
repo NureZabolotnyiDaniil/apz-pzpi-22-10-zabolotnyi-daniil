@@ -24,7 +24,7 @@ async def create_new_lantern(
     active_brightness: int = Query(
         0, ge=0, le=100, description="Active brightness (0-100%)"
     ),
-    active_time: int = Query(1, ge=1, description="Active time in seconds (over 1s)"),
+    active_time: int = Query(5, ge=5, description="Active time in seconds (over 5s)"),
     status: Optional[LanternStatus] = Query("working", description="Lantern status"),
     park_id: Optional[int] = Query(None, description="Park"),
     db: Session = Depends(get_db),
@@ -63,7 +63,7 @@ def update_lantern_details(
         None, ge=0, le=100, description="Active brightness (0-100%)"
     ),
     active_time: int = Query(
-        None, ge=1, description="Active time in seconds (over 1s)"
+        None, ge=5, description="Active time in seconds (over 5s)"
     ),
     status: LanternStatus = Query(None, description="Lantern status"),
     park_id: int = Query(None, description="Park. Enter '0' to reset the value"),
