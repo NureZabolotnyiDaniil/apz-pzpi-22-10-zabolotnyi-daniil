@@ -1,0 +1,96 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fastapi-scale
+  labels:
+    app: fastapi-scale
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: fastapi-scale
+  template:
+    metadata:
+      labels:
+        app: fastapi-scale
+    spec:
+      containers:
+      - name: fastapi
+        image: python:3.11-slim
+        command: ["/bin/sh"]
+        args: 
+        - -c
+        - |
+          pip install -r /app/requirements_scale.txt
+          cd /app
+          python -m uvicorn scale_test_main:app --host 0.0.0.0 --port 8000
+        ports:
+        - containerPort: 8000
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+        env:
+        - name: PYTHONUNBUFFERED
+          value: "1"
+        volumeMounts:
+        - name: fastapi-code
+          mountPath: /app
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 15
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 20
+      volumes:
+      - name: fastapi-code
+        configMap:
+          name: fastapi-code
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fastapi-scale-service
+spec:
+  selector:
+    app: fastapi-scale
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
+      nodePort: 32100
+  type: NodePort
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: fastapi-scale-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: fastapi-scale
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 50
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 70 

@@ -1,0 +1,140 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simple-fastapi
+  labels:
+    app: simple-fastapi
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: simple-fastapi
+  template:
+    metadata:
+      labels:
+        app: simple-fastapi
+    spec:
+      containers:
+      - name: fastapi
+        image: python:3.11-slim
+        command: ["/bin/sh"]
+        args:
+        - -c
+        - |
+          pip install fastapi uvicorn psutil
+          cat > /tmp/app.py << 'EOF'
+          from fastapi import FastAPI
+          import time
+          import math
+          import random
+          import socket
+          import psutil
+          from datetime import datetime
+          
+          app = FastAPI()
+          request_count = 0
+          
+          @app.get("/")
+          def root():
+              global request_count
+              request_count += 1
+              return {
+                  "message": "Simple FastAPI Scale Test",
+                  "hostname": socket.gethostname(),
+                  "timestamp": datetime.now().isoformat(),
+                  "request_count": request_count,
+                  "cpu_usage": psutil.cpu_percent(),
+                  "memory_usage": psutil.virtual_memory().percent
+              }
+          
+          @app.get("/health")
+          def health():
+              return {"status": "healthy", "hostname": socket.gethostname()}
+          
+          @app.get("/cpu-intensive")
+          def cpu_intensive():
+              global request_count
+              request_count += 1
+              start_time = time.time()
+              result = 0
+              for i in range(50000):
+                  result += math.sqrt(i * random.random())
+              processing_time = time.time() - start_time
+              return {
+                  "message": "CPU intensive task completed",
+                  "hostname": socket.gethostname(),
+                  "processing_time": processing_time,
+                  "result": result,
+                  "request_count": request_count,
+                  "cpu_usage": psutil.cpu_percent()
+              }
+          
+          @app.get("/stats")
+          def get_stats():
+              global request_count
+              return {
+                  "hostname": socket.gethostname(),
+                  "total_requests": request_count,
+                  "cpu_usage": psutil.cpu_percent(),
+                  "memory_usage": psutil.virtual_memory().percent,
+                  "timestamp": datetime.now().isoformat()
+              }
+          EOF
+          python -m uvicorn app:app --host 0.0.0.0 --port 8000 --app-dir /tmp
+        ports:
+        - containerPort: 8000
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+        env:
+        - name: PYTHONUNBUFFERED
+          value: "1"
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 45
+          periodSeconds: 20
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: simple-fastapi-service
+spec:
+  selector:
+    app: simple-fastapi
+  ports:
+    - protocol: TCP
+      port: 8000
+      targetPort: 8000
+      nodePort: 32200
+  type: NodePort
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: simple-fastapi-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: simple-fastapi
+  minReplicas: 2
+  maxReplicas: 8
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 60 
